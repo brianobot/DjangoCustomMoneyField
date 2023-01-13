@@ -96,7 +96,6 @@ class Asset():
             return True
         return False
 
-
     def is_same_currency(self, asset):
         return self.currency == asset.currency
 
