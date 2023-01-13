@@ -1,8 +1,8 @@
-from ast import operator
 from django.core.exceptions import ValidationError
 from django.db import models
 from decimal import Decimal
 
+# TODO: document the module and it's classes and class attributes
 
 # Create your models here.
 class Asset():
