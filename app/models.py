@@ -15,7 +15,7 @@ class Asset():
         if not self.is_asset(asset):
             raise AttributeError(f"{self.__class__.__name__} can not be added to {type(asset)}")
         if not self.is_same_currency(asset):
-            raise AttributeError(f"Can not add {self.__class__.__name__} of different currencies")
+            raise AttributeError(f"Can not carry out operation on {self.__class__.__name__} of different currencies unit")
 
     def valid_factor(self, factor):
         ''' checks that the factor to be used for mathematical operation with the asset is a float or an int'''
