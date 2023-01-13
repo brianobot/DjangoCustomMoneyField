@@ -2,12 +2,6 @@ from ast import operator
 from django.core.exceptions import ValidationError
 from django.db import models
 from decimal import Decimal
-#description
-#  i wish to create a class that represent monetarily value agnosticly, it should encapsulate the asset value and currency in a single python object
-# examples include
-# 1000 naira  = Asset(1000.00 'NGN') 
-# 1 US dollar = Asset(1.00, 'USD')
-# 0.0005 Bitcoin = Asset(0.0005, 'BTC')
 
 
 # Create your models here.
