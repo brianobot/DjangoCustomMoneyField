@@ -1,15 +1,16 @@
 # Custom DjangoMoneyField
 
-Custom Django Model Field to store and process a financial asset object as a single dataabse field,
-abstracting the currency name and value into a single object.
+Custom Django Model Field to store and process a financial asset object as a single database field,
+abstracting the asset name(current) and value(amount) into a single object.
 
 ## Description:
-I wish to create a class (object) that represent monetarily value agnosticly, it should encapsulate the asset value and currency in a single python object.
+I wish to create a class (object) that represent monetarily value agnosticly, it should encapsulate the asset value and currency in a single python object/database field.
 
 Examples include (Assuming said class is called Asset):
 - 1000 naira  = Asset(1000.00 'NGN') 
 - 1 US dollar = Asset(1.00, 'USD')
 - 0.0005 Bitcoin = Asset(0.0005, 'BTC')
+
 
 ## Implementation
 
