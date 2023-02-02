@@ -95,7 +95,7 @@ class Asset:
         return self.currency == asset.currency
 
     def __str__(self):
-        return f"Asset({self.amount=}, {self.currency=})"
+        return f"Asset({self.amount}, {self.currency})"
 
     def __repr__(self):
         return f'Asset({self.amount}, {self.currency})>'
