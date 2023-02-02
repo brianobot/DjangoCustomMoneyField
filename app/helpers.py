@@ -50,21 +50,21 @@ class Asset:
     def __add__(self, asset):
         self.asset_isvalid_currency(asset)
         result = self.amount + asset.amount
-        return self.create_asset(result, self.currency)
+        return Asset.create_asset(result, self.currency)
 
     def __sub__(self, asset):
         self.asset_isvalid_currency(asset)
         result = self.amount - asset.amount
-        return self.create_asset(result, self.currency)
+        return Asset.create_asset(result, self.currency)
 
     def __mul__(self, factor):
         if isinstance(factor, self.__class__):
             self.asset_isvalid_currency(factor)
             result = self.amount * factor.amount
-            return self.create_asset(result, self.currency)
+            return Asset.create_asset(result, self.currency)
         if self.valid_factor(factor):
             result = self.amount * Decimal(factor)
-            return self.create_asset(result, self.currency)
+            return Asset.create_asset(result, self.currency)
         else:
             raise AttributeError(f"Can not multiply {self.__class__.__name__} to {type(factor)}")
 
@@ -74,11 +74,11 @@ class Asset:
     def __truediv__(self, factor):
         if isinstance(factor, self.__class__):
             self.asset_isvalid_currency(factor)
-            result = self.amount * factor.amount
-            return self.create_asset(result, self.currency)
+            result = self.amount / factor.amount
+            return Asset.create_asset(result, self.currency)
         if self.valid_factor(factor):
             result = self.amount / Decimal(factor)
-            return self.create_asset(result, self.currency)
+            return Asset.create_asset(result, self.currency)
 
     @classmethod
     def create_asset(cls, amount, currency):
@@ -95,8 +95,8 @@ class Asset:
         return self.currency == asset.currency
 
     def __str__(self):
-        return f"Asset({self.amount}, {self.currency})"
+        return f"Asset({float(self.amount)}, {self.currency})"
 
     def __repr__(self):
-        return f'Asset({self.amount}, {self.currency})>'
+        return f'<Asset({float(self.amount)}, {self.currency})>'
 

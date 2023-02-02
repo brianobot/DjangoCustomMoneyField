@@ -50,4 +50,35 @@ class TestAssetClass(TestCase):
         five_stones = Asset(5, 'Stones')
         self.assertTrue(five_stones * 2 == Asset(10, 'Stones'))
 
-    
+    def test_division_of_asset(self):
+        six_putas = Asset(6, 'Putas')
+        two_putas = Asset(2, 'Putas')
+        self.assertTrue((six_putas/3) == Asset.create_asset(2.0, 'Putas'))
+        self.assertTrue((six_putas//3) == Asset.create_asset(2, 'Putas'))
+        self.assertTrue(six_putas/two_putas == Asset.create_asset(3.0, 'Putas'))
+        self.assertTrue(six_putas//two_putas == Asset.create_asset(3, 'Putas'))
+
+    def test_create_asset_classmethod(self):
+        test_asset = Asset.create_asset(3, 'Dinaris')
+        self.assertTrue(test_asset)
+        self.assertTrue(isinstance(test_asset, Asset))
+        self.assertTrue(test_asset.amount == 3)
+        self.assertTrue(test_asset.currency == 'Dinaris')
+
+    def test_is_asset_classmethod(self):
+        asset = Asset.create_asset(3, 'Nintobras')
+        non_asset = (2, 'FUllnery')
+        self.assertTrue(Asset.is_asset(asset))
+        self.assertFalse(Asset.is_asset(non_asset))
+
+    def test_is_same_currency_method(self):
+        one_dollar = Asset(1, 'Dollars')
+        two_dollar = Asset(2, 'Dollars')
+        six_dols = Asset(6, 'Dolsdar')
+        self.assertTrue(one_dollar.is_same_currency(two_dollar))
+        self.assertFalse(one_dollar.is_same_currency(six_dols))
+
+    def test_str_and_repr_method(self):
+        asset = Asset(2, 'Naira')
+        self.assertTrue(str(asset) == "Asset(2.0, Naira)")
+        self.assertTrue(repr(asset) == "<Asset(2.0, Naira)>")
