@@ -1,5 +1,7 @@
 # Custom DjangoMoneyField
 
+<img src="https://github.com/brianobot/DjangoCustomMoneyField/actions/workflows/django.yml/badge.svg?branch=master" />
+
 Custom Django Model Field to store and process a financial asset object as a single database field,
 abstracting the asset name(current) and value(amount) into a single object.
 
