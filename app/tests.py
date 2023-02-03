@@ -9,7 +9,6 @@ class TestAssetClass(TestCase):
         asset_one = Asset(3.142, 'Naira')
         asset_two = Asset(3.142, 'Dollars')
         asset_three = Asset(3.142, 'Cedes')
-
         self.assertTrue(asset_one)
         self.assertTrue(asset_two)
         self.assertTrue(asset_three)
@@ -22,8 +21,14 @@ class TestAssetClass(TestCase):
 
     def test_equality_on_assets(self):
         one_bitcoin = Asset(1, 'Bitcoin')
+        one_ether = Asset(1, 'Ethereum')
         another_one_bitcoin = Asset(1, 'Bitcoin')
         self.assertEqual(one_bitcoin, another_one_bitcoin)
+        with self.assertRaises(Exception) as context:
+            one_bitcoin == one_ether
+
+        with self.assertRaises(Exception) as context:
+            one_bitcoin == (1, 'bitcoin')
 
     def test_comparism_on_assets(self):
         one_bitcoin = Asset(1, 'Bitcoin')
@@ -48,7 +53,11 @@ class TestAssetClass(TestCase):
 
     def test_multiplication_of_asset(self):
         five_stones = Asset(5, 'Stones')
+        two_stones = Asset(2, 'Stones')
         self.assertTrue(five_stones * 2 == Asset(10, 'Stones'))
+        self.assertTrue(five_stones * two_stones == Asset(10, 'Stones'))
+        with self.assertRaises(Exception) as context:
+            five_stones * complex(1)
 
     def test_division_of_asset(self):
         six_putas = Asset(6, 'Putas')
@@ -82,3 +91,7 @@ class TestAssetClass(TestCase):
         asset = Asset(2, 'Naira')
         self.assertTrue(str(asset) == "Asset(2.0, Naira)")
         self.assertTrue(repr(asset) == "<Asset(2.0, Naira)>")
+
+
+class TestAssetField(TestCase):
+    ...
