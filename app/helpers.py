@@ -13,7 +13,7 @@ class Asset:
     def asset_isvalid_currency(self, asset):
         ''' checks that the asset (the only argument to the method is an asset and the same currency as the instance caller)'''
         if not Asset.is_asset(asset):
-            raise AttributeError(f"{self.__class__.__name__} can not be added to {type(asset)}")
+            raise AttributeError(f"{self.__class__.__name__} can not be used with {type(asset)}")
         if not self.is_same_currency(asset):
             raise AttributeError(f"Can not carry out operation on {self.__class__.__name__} of different currencies unit")
 

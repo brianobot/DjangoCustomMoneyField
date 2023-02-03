@@ -1,6 +1,11 @@
 from django.test import TestCase
+from django.core import serializers
+from django.db import connection
+from django.core.exceptions import ValidationError
+
 from .helpers import Asset
 from .fields import AssetField
+from .models import Money
 
 
 # Create your tests here.
@@ -94,4 +99,53 @@ class TestAssetClass(TestCase):
 
 
 class TestAssetField(TestCase):
-    ...
+    def test_refresh(self):
+        m = Money.objects.create(money=Asset(2, 'Dollars'))
+        m.refresh_from_db(fields=['money'])
+        self.assertTrue(isinstance(m.money, Asset))
+        self.assertEqual(m.money, Asset(2, 'Dollars'))
+    
+    def test_defer(self):
+        m = Money.objects.create(money=Asset(2, 'Bitcoin'))
+
+        self.assertIsInstance(m.money, Asset)
+
+        m = Money.objects.get(pk=m.pk)
+        self.assertIsInstance(m.money, Asset)
+        self.assertEqual(m.money, Asset(2, 'Bitcoin'))
+
+        m = Money.objects.defer("money").get(pk=m.pk)
+        self.assertIsInstance(m.money, Asset)
+        self.assertEqual(m.money, Asset(2, 'Bitcoin'))
+        # Refetch for save
+        m = Money.objects.defer("money").get(pk=m.pk)
+        m.save()
+
+        m = Money.objects.get(pk=m.pk)
+        self.assertIsInstance(m.money, Asset)
+        self.assertEqual(m.money, Asset(2, 'Bitcoin'))
+
+    def test_empty_field(self):
+        m = Money.objects.create()
+
+        m = Money.objects.get(pk=m.pk)
+        self.assertIsInstance(m.money, type(None))
+        self.assertFalse(bool(m.money))
+
+    def test_none_field(self):
+        m = Money.objects.create(money=None)
+
+        m = Money.objects.get(pk=m.pk)
+        self.assertIsInstance(m.money , type(None))
+
+    def test_field_parse_str_method(self):
+        with self.assertRaises(ValidationError):
+            AssetField().parse_asset('2,GOld,Silver')
+
+    def test_to_python_method(self):
+        shells = AssetField().to_python('2,Shellings')
+        coin = AssetField().to_python(Asset(1000.23, 'Coin'))
+        null_asset = AssetField().to_python(None)
+        self.assertIsInstance(shells, Asset)
+        self.assertIsInstance(coin, Asset)
+        self.assertIsInstance(null_asset, type(None))

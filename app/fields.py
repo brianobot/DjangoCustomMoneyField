@@ -12,15 +12,14 @@ class AssetField(models.Field):
 
     def __init__(self, *args, **kwargs):
         self.max_length = kwargs.get('max_length')
+        self.default_currency = kwargs.get('default_currency', 'naira')
         super().__init__(*args, **kwargs)
 
     def db_type(self, connection):
         return 'char(25)'
 
     def parse_asset(self, asset_str):
-        """takes a 2-item tuple and return an instance of the Asset class"""
-        print('Asset_str = ', asset_str)
-        print('Type of Asset_str = ', type(asset_str))
+        """takes a string of 2 items seperated by comma and return an instance of the Asset class"""
 
         data = asset_str.split(',')
         if len(data) != 2:
@@ -43,11 +42,10 @@ class AssetField(models.Field):
         return self.parse_asset(value)    
     
     def get_prep_value(self, value):
-        print('Print value for get_prep_value = ', value)
         if value is None:
             return value
 
-        amount, currency = value.amount, value.currency
+        amount, currency = getattr(value, 'amount', 0), getattr(value, 'currency', self.default_currency)
         return f"{amount},{currency}"
 
     def get_db_prep_value(self, value, connection, prepared=False):
